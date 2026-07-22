@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  role TEXT NOT NULL CHECK(role IN ('staff','student')),
+  capacity INTEGER DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS areas_of_interest (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  staff_id INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT,
+  FOREIGN KEY (staff_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS project_ideas (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  staff_id INTEGER NOT NULL,
+  area_id INTEGER,
+  title TEXT NOT NULL,
+  description TEXT,
+  FOREIGN KEY (staff_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (area_id) REFERENCES areas_of_interest(id) ON DELETE SET NULL
+);

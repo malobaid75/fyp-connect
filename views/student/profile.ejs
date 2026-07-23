@@ -1,0 +1,30 @@
+<%- include('../partials/header', { title: staff.name }) %>
+
+<h1><%= staff.name %></h1>
+<p>Supervision places remaining: <%= staff.capacity ?? 'not specified' %></p>
+
+<section class="card">
+  <h2>Areas of interest</h2>
+  <ul>
+    <% areas.forEach(area => { %>
+      <li><strong><%= area.name %></strong> — <%= area.description %></li>
+    <% }) %>
+  </ul>
+</section>
+
+<section class="card">
+  <h2>Project ideas</h2>
+  <ul>
+    <% projects.forEach(project => { %>
+      <li>
+        <strong><%= project.title %></strong>
+        <% if (project.area_name) { %><span class="tag"><%= project.area_name %></span><% } %>
+        <p><%= project.description %></p>
+      </li>
+    <% }) %>
+  </ul>
+</section>
+
+<a href="/student/directory">&larr; Back to directory</a>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %> — FYP Connect</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="/" class="brand">FYP Connect</a>
+    <% if (currentUser) { %>
+      <span>Hi, <%= currentUser.name %></span>
+      <form method="POST" action="/logout" style="display:inline">
+        <button type="submit" class="link-button">Log out</button>
+      </form>
+    <% } %>
+  </nav>
+  <main class="container">

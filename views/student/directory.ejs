@@ -1,0 +1,23 @@
+<%- include('../partials/header', { title: 'Find a supervisor' }) %>
+
+<h1>Staff directory</h1>
+
+<form method="GET" action="/student/search" class="inline-form">
+  <input type="text" name="keyword" placeholder="Search by name, area, or project" value="<%= keyword %>">
+  <button type="submit">Search</button>
+</form>
+
+<div class="grid">
+  <% if (staff.length === 0) { %>
+    <p>No matches found.</p>
+  <% } %>
+  <% staff.forEach(member => { %>
+    <div class="card">
+      <h3><%= member.name %></h3>
+      <p>Places remaining: <%= member.capacity ?? 'not specified' %></p>
+      <a href="/student/profile/<%= member.id %>">View profile</a>
+    </div>
+  <% }) %>
+</div>
+
+<%- include('../partials/footer') %>

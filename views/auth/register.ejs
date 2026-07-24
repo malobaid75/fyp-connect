@@ -1,14 +1,15 @@
 <%- include('../partials/header', { title: 'Register' }) %>
 
 <div class="auth-card">
+  <div class="auth-brand">FYP Connect</div>
   <h1>Create an account</h1>
   <% if (error) { %><p class="error"><%= error %></p><% } %>
   <form method="POST" action="/register">
     <label>Full name
-      <input type="text" name="name" required>
+      <input type="text" name="name" required autocomplete="name">
     </label>
     <label>Email
-      <input type="email" name="email" required>
+      <input type="email" name="email" required autocomplete="email">
     </label>
     <label>Password
       <input type="password" name="password" required minlength="6">
@@ -19,9 +20,9 @@
         <option value="staff">Member of staff</option>
       </select>
     </label>
-    <button type="submit">Register</button>
+    <button type="submit" class="btn-full">Create account</button>
   </form>
-  <p>Already have an account? <a href="/login">Log in</a></p>
+  <p class="auth-footer">Already have an account? <a href="/login">Log in</a></p>
 </div>
 
 <%- include('../partials/footer') %>

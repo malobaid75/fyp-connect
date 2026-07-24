@@ -2,59 +2,94 @@
 
 body {
   font-family: -apple-system, Segoe UI, Roboto, sans-serif;
-  background: #f6f5f2;
+  background: #f4f3f0;
   color: #2c2c2a;
   margin: 0;
+  line-height: 1.5;
 }
 
+/* ── Navbar ── */
 .navbar {
   background: #26215c;
   color: white;
-  padding: 14px 24px;
+  padding: 14px 28px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+.navbar > span {
+  margin-left: auto;
+  font-size: 14px;
+  opacity: 0.85;
 }
 
 .brand {
   color: white;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
   font-size: 18px;
+  letter-spacing: 0.2px;
 }
 
+/* ── Layout ── */
 .container {
   max-width: 900px;
   margin: 32px auto;
   padding: 0 20px;
 }
 
+/* ── Cards ── */
 .card {
   background: white;
-  border: 1px solid #e0ded5;
+  border: 1px solid #e2e0d8;
   border-radius: 10px;
-  padding: 20px;
+  padding: 24px;
   margin-bottom: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
 .auth-card {
   max-width: 380px;
   margin: 60px auto;
   background: white;
-  padding: 28px;
-  border-radius: 10px;
-  border: 1px solid #e0ded5;
+  padding: 32px;
+  border-radius: 12px;
+  border: 1px solid #e2e0d8;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.09);
 }
 
-h1 { font-size: 24px; margin-top: 0; }
-h2 { font-size: 18px; }
+/* ── Typography ── */
+h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-top: 0;
+  color: #26215c;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 6px;
+}
 
 label {
   display: block;
   margin-bottom: 14px;
   font-size: 14px;
+  font-weight: 500;
+  color: #3a3a38;
 }
 
+/* ── Form Controls ── */
 input, select {
   display: block;
   width: 100%;
@@ -63,6 +98,14 @@ input, select {
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  background: #fff;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #26215c;
+  box-shadow: 0 0 0 3px rgba(38, 33, 92, 0.1);
 }
 
 .inline-form {
@@ -80,6 +123,7 @@ input, select {
   margin-top: 0;
 }
 
+/* ── Buttons ── */
 button {
   background: #26215c;
   color: white;
@@ -88,10 +132,25 @@ button {
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 0.15s, transform 0.1s;
+}
+
+button:hover {
+  background: #332a80;
+}
+
+button:active {
+  transform: scale(0.97);
 }
 
 button.danger {
   background: #a32d2d;
+}
+
+button.danger:hover {
+  background: #c23535;
 }
 
 button.link-button {
@@ -99,40 +158,274 @@ button.link-button {
   color: white;
   text-decoration: underline;
   padding: 0;
+  font-weight: 400;
 }
 
+button.link-button:hover {
+  opacity: 0.75;
+}
+
+/* ── Item list (dashboard rows) ── */
 .item-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .item-list li {
   border-top: 1px solid #eee;
   padding: 12px 0;
   display: flex;
-  gap: 12px;
+  gap: 8px;
   align-items: center;
   flex-wrap: wrap;
 }
 
+.item-list li .inline-form {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.item-list li > form:not(.inline-form) {
+  display: flex;
+  align-items: center;
+}
+
+/* ── Grid (directory) ── */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 16px;
 }
 
+.grid .card {
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.grid .card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ── Tag ── */
 .tag {
-  background: #e6f1fb;
-  color: #0c447c;
+  background: #ece9ff;
+  color: #26215c;
   padding: 2px 8px;
   border-radius: 10px;
   font-size: 12px;
+  font-weight: 500;
   margin-left: 6px;
 }
 
+/* ── Error ── */
 .error {
   color: #a32d2d;
   font-size: 14px;
+  background: #fdf1f1;
+  border: 1px solid #f5c6c6;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
 }
 
-a { color: #185fa5; }
+/* ── Links ── */
+a { color: #26215c; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Page header ── */
+.page-header {
+  margin-bottom: 20px;
+}
+
+.page-subtitle {
+  color: #666;
+  font-size: 15px;
+  margin: 0 0 4px;
+}
+
+/* ── Search bar ── */
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.search-bar input {
+  flex: 1;
+  margin-top: 0;
+}
+
+/* ── Staff card (directory) ── */
+.staff-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.staff-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #26215c;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── Capacity badge ── */
+.capacity-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin: 0;
+}
+
+.capacity-badge.available { background: #e6f4ea; color: #1e6b3c; }
+.capacity-badge.full      { background: #fdecea; color: #a32d2d; }
+.capacity-badge.neutral   { background: #f0eff8; color: #555; }
+
+/* ── "View profile" link ── */
+.btn-link {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #26215c;
+  margin-top: 2px;
+}
+
+/* ── Profile header ── */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #26215c;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.profile-header h1 {
+  margin-bottom: 8px;
+}
+
+.contact-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #26215c;
+  font-weight: 500;
+}
+
+.contact-prompt {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: #888;
+}
+
+.contact-prompt a {
+  color: #26215c;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ── Back link ── */
+.back-link {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #26215c;
+  margin-bottom: 20px;
+}
+
+/* ── Detail list (areas & projects) ── */
+.detail-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.detail-list li {
+  padding: 10px 0;
+  border-top: 1px solid #eee;
+  font-size: 14px;
+}
+
+.detail-list li:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.project-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.project-desc {
+  margin: 0;
+}
+
+.muted {
+  color: #666;
+}
+
+/* ── Empty state ── */
+.empty-state {
+  color: #888;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* ── Section description ── */
+.section-desc {
+  color: #666;
+  font-size: 14px;
+  margin: -8px 0 14px;
+}
+
+/* ── Full-width button ── */
+.btn-full {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  margin-top: 4px;
+}
+
+/* ── Auth card brand header ── */
+.auth-brand {
+  font-size: 15px;
+  font-weight: 700;
+  color: #26215c;
+  letter-spacing: 0.3px;
+  margin-bottom: 16px;
+}
+
+/* ── Auth footer link line ── */
+.auth-footer {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin: 16px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}

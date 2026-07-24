@@ -1,30 +1,55 @@
 <%- include('../partials/header', { title: staff.name }) %>
 
-<h1><%= staff.name %></h1>
-<p>Supervision places remaining: <%= staff.capacity ?? 'not specified' %></p>
+<a href="/student/directory" class="back-link">&larr; Back to directory</a>
+
+<div class="profile-header card">
+  <div class="profile-avatar"><%= staff.name.charAt(0).toUpperCase() %></div>
+  <div>
+    <h1><%= staff.name %></h1>
+    <% if (staff.capacity == null) { %>
+      <span class="capacity-badge neutral">Capacity not specified</span>
+    <% } else if (staff.capacity === 0) { %>
+      <span class="capacity-badge full">No places available</span>
+    <% } else { %>
+      <span class="capacity-badge available"><%= staff.capacity %> supervision place<%= staff.capacity !== 1 ? 's' : '' %> available</span>
+    <% } %>
+    <p class="contact-prompt">Interested in supervision? <a href="mailto:<%= staff.email %>?subject=Final%20Year%20Project%20Enquiry">Contact <%= staff.name %></a></p>
+  </div>
+</div>
 
 <section class="card">
   <h2>Areas of interest</h2>
-  <ul>
-    <% areas.forEach(area => { %>
-      <li><strong><%= area.name %></strong> — <%= area.description %></li>
-    <% }) %>
-  </ul>
+  <% if (areas.length === 0) { %>
+    <p class="empty-state">No areas listed.</p>
+  <% } else { %>
+    <ul class="detail-list">
+      <% areas.forEach(area => { %>
+        <li>
+          <strong><%= area.name %></strong>
+          <% if (area.description) { %><span class="muted"> — <%= area.description %></span><% } %>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
 </section>
 
 <section class="card">
   <h2>Project ideas</h2>
-  <ul>
-    <% projects.forEach(project => { %>
-      <li>
-        <strong><%= project.title %></strong>
-        <% if (project.area_name) { %><span class="tag"><%= project.area_name %></span><% } %>
-        <p><%= project.description %></p>
-      </li>
-    <% }) %>
-  </ul>
+  <% if (projects.length === 0) { %>
+    <p class="empty-state">No projects listed.</p>
+  <% } else { %>
+    <ul class="detail-list">
+      <% projects.forEach(project => { %>
+        <li>
+          <div class="project-title-row">
+            <strong><%= project.title %></strong>
+            <% if (project.area_name) { %><span class="tag"><%= project.area_name %></span><% } %>
+          </div>
+          <% if (project.description) { %><p class="muted project-desc"><%= project.description %></p><% } %>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
 </section>
-
-<a href="/student/directory">&larr; Back to directory</a>
 
 <%- include('../partials/footer') %>

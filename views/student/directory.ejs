@@ -1,21 +1,31 @@
 <%- include('../partials/header', { title: 'Find a supervisor' }) %>
 
-<h1>Staff directory</h1>
+<div class="page-header">
+  <h1>Staff Directory</h1>
+  <p class="page-subtitle">Browse supervisors and find the right fit for your final year project.</p>
+</div>
 
-<form method="GET" action="/student/search" class="inline-form">
-  <input type="text" name="keyword" placeholder="Search by name, area, or project" value="<%= keyword %>">
+<form method="GET" action="/student/search" class="search-bar">
+  <input type="text" name="keyword" placeholder="Search by name, area, or project…" value="<%= keyword %>">
   <button type="submit">Search</button>
 </form>
 
 <div class="grid">
   <% if (staff.length === 0) { %>
-    <p>No matches found.</p>
+    <p class="empty-state">No matches found.</p>
   <% } %>
   <% staff.forEach(member => { %>
-    <div class="card">
+    <div class="card staff-card">
+      <div class="staff-avatar"><%= member.name.charAt(0).toUpperCase() %></div>
       <h3><%= member.name %></h3>
-      <p>Places remaining: <%= member.capacity ?? 'not specified' %></p>
-      <a href="/student/profile/<%= member.id %>">View profile</a>
+      <% if (member.capacity == null) { %>
+        <span class="capacity-badge neutral">Capacity not specified</span>
+      <% } else if (member.capacity === 0) { %>
+        <span class="capacity-badge full">No places available</span>
+      <% } else { %>
+        <span class="capacity-badge available"><%= member.capacity %> place<%= member.capacity !== 1 ? 's' : '' %> available</span>
+      <% } %>
+      <a href="/student/profile/<%= member.id %>" class="btn-link">View profile →</a>
     </div>
   <% }) %>
 </div>

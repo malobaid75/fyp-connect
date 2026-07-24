@@ -1,9 +1,13 @@
 <%- include('../partials/header', { title: 'My dashboard' }) %>
 
-<h1>Welcome, <%= user.name %></h1>
+<div class="page-header">
+  <h1>Welcome, <%= user.name %></h1>
+  <p class="page-subtitle">Manage your supervision capacity, areas of interest, and project ideas.</p>
+</div>
 
 <section class="card">
   <h2>Supervision capacity</h2>
+  <p class="section-desc">Set how many students you are currently available to supervise.</p>
   <form method="POST" action="/staff/capacity" class="inline-form">
     <label>Students I can currently supervise
       <input type="number" name="capacity" min="0" value="<%= user.capacity ?? 0 %>">
@@ -14,30 +18,36 @@
 
 <section class="card">
   <h2>Areas of interest</h2>
+  <p class="section-desc">These help students find you when searching for supervisors.</p>
   <form method="POST" action="/staff/areas" class="inline-form">
     <input type="text" name="name" placeholder="Area name" required>
     <input type="text" name="description" placeholder="Short description (optional)">
     <button type="submit">Add area</button>
   </form>
 
-  <ul class="item-list">
-    <% areas.forEach(area => { %>
-      <li>
-        <form method="POST" action="/staff/areas/<%= area.id %>?_method=PUT" class="inline-form">
-          <input type="text" name="name" value="<%= area.name %>" required>
-          <input type="text" name="description" value="<%= area.description || '' %>">
-          <button type="submit">Save</button>
-        </form>
-        <form method="POST" action="/staff/areas/<%= area.id %>?_method=DELETE" onsubmit="return confirm('Delete this area of interest?')">
-          <button type="submit" class="danger">Delete</button>
-        </form>
-      </li>
-    <% }) %>
-  </ul>
+  <% if (areas.length > 0) { %>
+    <ul class="item-list">
+      <% areas.forEach(area => { %>
+        <li>
+          <form method="POST" action="/staff/areas/<%= area.id %>?_method=PUT" class="inline-form">
+            <input type="text" name="name" value="<%= area.name %>" required>
+            <input type="text" name="description" value="<%= area.description || '' %>">
+            <button type="submit">Save</button>
+          </form>
+          <form method="POST" action="/staff/areas/<%= area.id %>?_method=DELETE" onsubmit="return confirm('Delete this area of interest?')">
+            <button type="submit" class="danger">Delete</button>
+          </form>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p class="empty-state">No areas added yet. Add one above to help students find you.</p>
+  <% } %>
 </section>
 
 <section class="card">
   <h2>Project ideas</h2>
+  <p class="section-desc">Share project ideas that students can browse and discuss with you.</p>
   <form method="POST" action="/staff/projects" class="inline-form">
     <input type="text" name="title" placeholder="Project title" required>
     <input type="text" name="description" placeholder="Short description">
@@ -50,26 +60,30 @@
     <button type="submit">Add project</button>
   </form>
 
-  <ul class="item-list">
-    <% projects.forEach(project => { %>
-      <li>
-        <form method="POST" action="/staff/projects/<%= project.id %>?_method=PUT" class="inline-form">
-          <input type="text" name="title" value="<%= project.title %>" required>
-          <input type="text" name="description" value="<%= project.description || '' %>">
-          <select name="area_id">
-            <option value="">No linked area</option>
-            <% areas.forEach(area => { %>
-              <option value="<%= area.id %>" <%= project.area_id === area.id ? 'selected' : '' %>><%= area.name %></option>
-            <% }) %>
-          </select>
-          <button type="submit">Save</button>
-        </form>
-        <form method="POST" action="/staff/projects/<%= project.id %>?_method=DELETE" onsubmit="return confirm('Delete this project idea?')">
-          <button type="submit" class="danger">Delete</button>
-        </form>
-      </li>
-    <% }) %>
-  </ul>
+  <% if (projects.length > 0) { %>
+    <ul class="item-list">
+      <% projects.forEach(project => { %>
+        <li>
+          <form method="POST" action="/staff/projects/<%= project.id %>?_method=PUT" class="inline-form">
+            <input type="text" name="title" value="<%= project.title %>" required>
+            <input type="text" name="description" value="<%= project.description || '' %>">
+            <select name="area_id">
+              <option value="">No linked area</option>
+              <% areas.forEach(area => { %>
+                <option value="<%= area.id %>" <%= project.area_id === area.id ? 'selected' : '' %>><%= area.name %></option>
+              <% }) %>
+            </select>
+            <button type="submit">Save</button>
+          </form>
+          <form method="POST" action="/staff/projects/<%= project.id %>?_method=DELETE" onsubmit="return confirm('Delete this project idea?')">
+            <button type="submit" class="danger">Delete</button>
+          </form>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p class="empty-state">No project ideas added yet.</p>
+  <% } %>
 </section>
 
 <%- include('../partials/footer') %>

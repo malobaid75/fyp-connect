@@ -1,5 +1,7 @@
 const db = require('../db/database');
 
+// Get all project ideas published by a staff member. Includes area name
+// via a LEFT JOIN to provide context without requiring a separate query.
 function findByStaff(staffId) {
   return new Promise((resolve, reject) => {
     const sql = `
@@ -15,6 +17,7 @@ function findByStaff(staffId) {
   });
 }
 
+// Get a single project idea by id.
 function findById(id) {
   return new Promise((resolve, reject) => {
     db.get(`SELECT * FROM project_ideas WHERE id = ?`, [id], (err, row) => {
@@ -24,6 +27,7 @@ function findById(id) {
   });
 }
 
+// Insert a new project idea and return its id.
 function create(staffId, areaId, title, description) {
   return new Promise((resolve, reject) => {
     const sql = `INSERT INTO project_ideas (staff_id, area_id, title, description) VALUES (?, ?, ?, ?)`;
@@ -34,6 +38,7 @@ function create(staffId, areaId, title, description) {
   });
 }
 
+// Update a project idea's title/description/area.
 function update(id, title, description, areaId) {
   return new Promise((resolve, reject) => {
     const sql = `UPDATE project_ideas SET title = ?, description = ?, area_id = ? WHERE id = ?`;
@@ -44,6 +49,7 @@ function update(id, title, description, areaId) {
   });
 }
 
+// Remove a project idea by id.
 function remove(id) {
   return new Promise((resolve, reject) => {
     db.run(`DELETE FROM project_ideas WHERE id = ?`, [id], (err) => {
@@ -53,6 +59,9 @@ function remove(id) {
   });
 }
 
+// Search for project ideas optionally filtering by keyword and/or area.
+// Returns project rows joined with area and staff metadata to simplify
+// rendering in the UI.
 function search(keyword, areaId) {
   let sql = `
     SELECT p.*, a.name AS area_name, u.name AS staff_name, u.id AS staff_id

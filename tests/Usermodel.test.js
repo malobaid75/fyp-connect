@@ -1,21 +1,11 @@
 process.env.DB_FILE = 'test_user.db';
-const fs = require('fs');
-const path = require('path');
-const dbFilePath = path.join(__dirname, '../db/test_user.db');
-
+const db = require('../db/database');
+const { resetDatabase } = require('./testUtils');
 const userModel = require('../models/userModel');
 
-beforeAll((done) => {
-  setTimeout(done, 200); // let schema.sql finish running against the fresh test db
-});
-
-afterAll(() => {
-  try {
-    if (fs.existsSync(dbFilePath)) fs.unlinkSync(dbFilePath);
-  } catch (err) {
-    // On Windows, sqlite3 may still hold a file lock briefly after tests finish.
-    // Safe to ignore — the file is in .gitignore and gets overwritten next run.
-  }
+beforeAll(async () => {
+  await new Promise((resolve) => setTimeout(resolve, 200)); // let schema.sql finish running
+  await resetDatabase(db); // start every run from a clean, empty database
 });
 
 describe('userModel.create + findByEmail', () => {
@@ -87,7 +77,6 @@ describe('userModel.getAllStaff + searchStaff', () => {
   test('valid partition: getAllStaff only returns users with role staff', async () => {
     const staff = await userModel.getAllStaff();
     expect(staff.every(u => u !== undefined)).toBe(true);
-    // spot check: none of the returned rows should be the student created above
     expect(staff.some(u => u.name === 'Sara Ali')).toBe(false);
   });
 

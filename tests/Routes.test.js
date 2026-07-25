@@ -1,22 +1,12 @@
 process.env.DB_FILE = 'test_routes.db';
-const fs = require('fs');
-const path = require('path');
-const dbFilePath = path.join(__dirname, '../db/test_routes.db');
-
+const db = require('../db/database');
+const { resetDatabase } = require('./testUtils');
 const request = require('supertest');
 const app = require('../server');
 
-beforeAll((done) => {
-  setTimeout(done, 200);
-});
-
-afterAll(() => {
-  try {
-    if (fs.existsSync(dbFilePath)) fs.unlinkSync(dbFilePath);
-  } catch (err) {
-    // On Windows, sqlite3 may still hold a file lock briefly after tests finish.
-    // Safe to ignore — the file is in .gitignore and gets overwritten next run.
-  }
+beforeAll(async () => {
+  await new Promise((resolve) => setTimeout(resolve, 200));
+  await resetDatabase(db);
 });
 
 describe('Access control (FR13)', () => {
@@ -48,12 +38,12 @@ describe('Registration and login (auth flow)', () => {
       .post('/register')
       .type('form')
       .send({ name: 'Dr Duplicate', email: 'routetest@test.edu', password: 'password123', role: 'staff' });
-    expect(res.status).toBe(200); // re-renders the register form with an error
+    expect(res.status).toBe(200);
     expect(res.text).toContain('already exists');
   });
 
   test('valid partition: logging in with correct credentials redirects to dashboard', async () => {
-    const agent = request.agent(app); // keeps cookies across requests
+    const agent = request.agent(app);
     const res = await agent
       .post('/login')
       .type('form')
@@ -95,7 +85,6 @@ describe('Staff CRUD via an authenticated session (FR1, FR4, NFR4)', () => {
   });
 
   test('invalid partition: submitting an empty area name does not create a row', async () => {
-    const before = await agent.get('/staff/dashboard');
     const res = await agent
       .post('/staff/areas')
       .type('form')

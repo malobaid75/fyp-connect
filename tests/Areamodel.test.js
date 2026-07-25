@@ -1,8 +1,6 @@
 process.env.DB_FILE = 'test_area.db';
-const fs = require('fs');
-const path = require('path');
-const dbFilePath = path.join(__dirname, '../db/test_area.db');
-
+const db = require('../db/database');
+const { resetDatabase } = require('./testUtils');
 const userModel = require('../models/userModel');
 const areaModel = require('../models/areaModel');
 
@@ -10,21 +8,13 @@ let staffId;
 
 beforeAll(async () => {
   await new Promise((resolve) => setTimeout(resolve, 200));
+  await resetDatabase(db);
   staffId = await userModel.create({
     name: 'Dr Test Staff',
     email: 'teststaff@test.edu',
     password: 'hashedvalue',
     role: 'staff'
   });
-});
-
-afterAll(() => {
-  try {
-    if (fs.existsSync(dbFilePath)) fs.unlinkSync(dbFilePath);
-  } catch (err) {
-    // On Windows, sqlite3 may still hold a file lock briefly after tests finish.
-    // Safe to ignore — the file is in .gitignore and gets overwritten next run.
-  }
 });
 
 describe('areaModel.create + findByStaff', () => {

@@ -34,5 +34,11 @@ app.use('/', authRoutes);
 app.use('/staff', staffRoutes);
 app.use('/student', studentRoutes);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`FYP Connect running on http://localhost:${PORT}`));
+// Only start listening when this file is run directly (npm start),
+// not when it's required by the Supertest suite.
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`FYP Connect running on http://localhost:${PORT}`));
+}
+
+module.exports = app;

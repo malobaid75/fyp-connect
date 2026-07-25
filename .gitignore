@@ -1,3 +1,4 @@
 node_modules/
 db/fypconnect.db
+db/test_*.db
 .env

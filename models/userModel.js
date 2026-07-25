@@ -1,5 +1,6 @@
 const db = require('../db/database');
 
+// Create a new user and return the inserted row id.
 function create({ name, email, password, role }) {
   return new Promise((resolve, reject) => {
     const sql = `INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)`;
@@ -10,6 +11,7 @@ function create({ name, email, password, role }) {
   });
 }
 
+// Find a user row by email. Returns a single user object or undefined.
 function findByEmail(email) {
   return new Promise((resolve, reject) => {
     db.get(`SELECT * FROM users WHERE email = ?`, [email], (err, row) => {
@@ -19,6 +21,7 @@ function findByEmail(email) {
   });
 }
 
+// Find a user by id. Useful for profile lookups and session validation.
 function findById(id) {
   return new Promise((resolve, reject) => {
     db.get(`SELECT * FROM users WHERE id = ?`, [id], (err, row) => {
@@ -28,6 +31,8 @@ function findById(id) {
   });
 }
 
+// Update the supervision capacity for a staff member. Only affects rows
+// where role = 'staff' to avoid modifying student records by mistake.
 function setCapacity(staffId, capacity) {
   return new Promise((resolve, reject) => {
     db.run(`UPDATE users SET capacity = ? WHERE id = ? AND role = 'staff'`, [capacity, staffId], (err) => {
@@ -37,6 +42,8 @@ function setCapacity(staffId, capacity) {
   });
 }
 
+// Return a lightweight list of staff users for directory views. Only
+// selected columns are returned to avoid exposing passwords.
 function getAllStaff() {
   return new Promise((resolve, reject) => {
     db.all(`SELECT id, name, email, capacity FROM users WHERE role = 'staff'`, [], (err, rows) => {
@@ -46,6 +53,8 @@ function getAllStaff() {
   });
 }
 
+// Search staff by name, area name or project title using LIKE queries.
+// Uses LEFT JOINs to allow matching staff without areas or projects.
 function searchStaff(keyword) {
   const like = `%${keyword}%`;
   return new Promise((resolve, reject) => {

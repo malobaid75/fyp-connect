@@ -1,3 +1,5 @@
+// Test helper: clear main tables and reset SQLite autoincrement counters
+// so each test run starts from a clean and predictable state.
 function resetDatabase(db) {
   return new Promise((resolve, reject) => {
     db.serialize(() => {

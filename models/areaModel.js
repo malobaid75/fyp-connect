@@ -1,5 +1,6 @@
 const db = require('../db/database');
 
+// Get all areas of interest for a staff member.
 function findByStaff(staffId) {
   return new Promise((resolve, reject) => {
     db.all(`SELECT * FROM areas_of_interest WHERE staff_id = ?`, [staffId], (err, rows) => {
@@ -9,6 +10,7 @@ function findByStaff(staffId) {
   });
 }
 
+// Get a single area by id.
 function findById(id) {
   return new Promise((resolve, reject) => {
     db.get(`SELECT * FROM areas_of_interest WHERE id = ?`, [id], (err, row) => {
@@ -18,6 +20,7 @@ function findById(id) {
   });
 }
 
+// Create a new area and return its id.
 function create(staffId, name, description) {
   return new Promise((resolve, reject) => {
     const sql = `INSERT INTO areas_of_interest (staff_id, name, description) VALUES (?, ?, ?)`;
@@ -28,6 +31,7 @@ function create(staffId, name, description) {
   });
 }
 
+// Update an existing area record.
 function update(id, name, description) {
   return new Promise((resolve, reject) => {
     db.run(`UPDATE areas_of_interest SET name = ?, description = ? WHERE id = ?`, [name, description, id], (err) => {
@@ -37,6 +41,7 @@ function update(id, name, description) {
   });
 }
 
+// Remove an area.
 function remove(id) {
   return new Promise((resolve, reject) => {
     db.run(`DELETE FROM areas_of_interest WHERE id = ?`, [id], (err) => {

@@ -3,6 +3,7 @@ const router = express.Router();
 const studentController = require('../controllers/studentController');
 const { requireLogin, requireRole } = require('../middleware/auth');
 
+// Student-only routes: directory/search/profile views.
 router.use(requireLogin, requireRole('student'));
 
 router.get('/directory', studentController.directory);

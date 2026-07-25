@@ -32,6 +32,12 @@ npm start
 
 The app will be available at `http://localhost:3000`. The SQLite database file is created automatically on first run no manual setup needed.
 
+### Running Unit tests
+
+```bash
+npm test
+```
+
 ## Project structure
 
 ```text
@@ -42,6 +48,7 @@ fyp-connect/
 ├── controllers/
 ├── views/
 ├── routes/
+├── tests/
 ├── middleware/
 └── public/
 ```
@@ -56,3 +63,4 @@ fyp-connect/
 - Student: view full staff profile
 - Student: search/filter by keyword or area
 - Student: contact a staff member directly from their profile
+

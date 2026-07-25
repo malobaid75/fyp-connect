@@ -2,6 +2,8 @@ const userModel = require('../models/userModel');
 const areaModel = require('../models/areaModel');
 const projectModel = require('../models/projectModel');
 
+// Dashboard: gather the current staff user's areas, projects and profile
+// and render the staff dashboard view.
 exports.dashboard = async (req, res) => {
   const staffId = req.session.user.id;
   const areas = await areaModel.findByStaff(staffId);
@@ -10,8 +12,7 @@ exports.dashboard = async (req, res) => {
   res.render('staff/dashboard', { areas, projects, user, error: null });
 };
 
-// --- Areas of interest ---
-
+// Create a new area of interest for the logged-in staff member.
 exports.addArea = async (req, res) => {
   const { name, description } = req.body;
   if (!name || !name.trim()) return res.redirect('/staff/dashboard');
@@ -19,6 +20,8 @@ exports.addArea = async (req, res) => {
   res.redirect('/staff/dashboard');
 };
 
+// Update an existing area. Authorization: only the owner (staff_id)
+// update their own area records.
 exports.updateArea = async (req, res) => {
   const area = await areaModel.findById(req.params.id);
   if (!area || area.staff_id !== req.session.user.id) {
@@ -29,6 +32,7 @@ exports.updateArea = async (req, res) => {
   res.redirect('/staff/dashboard');
 };
 
+// Delete an area. Authorization enforced similarly to update.
 exports.deleteArea = async (req, res) => {
   const area = await areaModel.findById(req.params.id);
   if (!area || area.staff_id !== req.session.user.id) {
@@ -38,8 +42,9 @@ exports.deleteArea = async (req, res) => {
   res.redirect('/staff/dashboard');
 };
 
-// --- Project ideas ---
 
+// Create a new project idea associated with the staff user and optionally
+// an area of interest.
 exports.addProject = async (req, res) => {
   const { title, description, area_id } = req.body;
   if (!title || !title.trim()) return res.redirect('/staff/dashboard');
@@ -47,6 +52,7 @@ exports.addProject = async (req, res) => {
   res.redirect('/staff/dashboard');
 };
 
+// Update project idea with authorization check to ensure staff owns it.
 exports.updateProject = async (req, res) => {
   const project = await projectModel.findById(req.params.id);
   if (!project || project.staff_id !== req.session.user.id) {
@@ -57,6 +63,7 @@ exports.updateProject = async (req, res) => {
   res.redirect('/staff/dashboard');
 };
 
+// Delete project idea with ownership check.
 exports.deleteProject = async (req, res) => {
   const project = await projectModel.findById(req.params.id);
   if (!project || project.staff_id !== req.session.user.id) {
@@ -66,8 +73,8 @@ exports.deleteProject = async (req, res) => {
   res.redirect('/staff/dashboard');
 };
 
-// --- Supervision capacity ---
 
+// Set supervision capacity for the staff user. Basic validation is applied.
 exports.setCapacity = async (req, res) => {
   const capacity = parseInt(req.body.capacity, 10);
   if (isNaN(capacity) || capacity < 0) {
